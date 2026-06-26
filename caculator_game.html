@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Calculator Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Press Start 2P', cursive;
+    color: #123c4a;
+
+    background-image: url('calcquest-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+
+    padding-top: 100px;
+}
+h1, h2 {
+    margin: 10px 0;
+}
+/* START PAGE */
+#startPage {
+    position: fixed;
+    inset: 0;
+    background-image: url('start-bg.png');
+    background-size: cover;
+    background-position: center;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 10;
+
+    padding-top: 150px;
+}
+
+#startPage h1 {
+    font-size: 32px;
+    color: #123c4a;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.startButton {
+    padding: 20px 35px;
+    font-size: 16px;
+    background: #f26a2e;
+    color: white;
+    border: 4px solid #123c4a;
+    font-family: 'Press Start 2P', cursive;
+    cursor: pointer;
+
+    box-shadow: 5px 5px 0 #123c4a;
+}
+
+.startButton:hover {
+    transform: translate(-3px,-3px);
+}
+
+/* CALCULATOR */
+.calculator {
+    width: 280px;
+    margin: 15px 0;
+    background: #2aa6a6;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #123c4a;
+}
+.calculator {
+    border: 4px solid #123c4a;
+    box-shadow: 
+        4px 4px 0 #123c4a,
+        8px 8px 0 #2aa6a6;
+}
+
+.display {
+    background: #f5e6c8;
+    color: #123c4a;
+    font-size: 22px;
+    padding: 10px;
+    margin-bottom: 10px;
+    height: 40px;
+    text-align: right;
+    overflow-x: auto;
+    border: 3px solid #123c4a;
+}
+.display {
+    font-size: 14px;
+    border: 4px solid #123c4a;
+    box-shadow: inset 3px 3px 0 #123c4a;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+button {
+    padding: 15px;
+    font-size: 12px;
+    border: 3px solid #123c4a;
+    cursor: pointer;
+    background: #f26a2e;
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+
+    box-shadow: 3px 3px 0 #123c4a;
+    transition: all 0.1s;
+}
+
+/* OPERACIJE */
+.operator {
+    background: #2aa6a6;
+}
+
+/* = dugme */
+.equal {
+    background: #f2c230;
+    color: #123c4a;
+}
+
+/* C dugme */
+.clear {
+    background: #123c4a;
+    color: white;
+}
+
+.used {
+    background: gray !important;
+    cursor: not-allowed;
+}
+
+.result {
+    margin-top: 15px;
+    font-size: 20px;
+    color: #123c4a;
+}
+button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 #123c4a;
+}
+
+button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 #123c4a;
+}
+.gameArea {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calculator {
+    width: 280px;
+    z-index: 2;
+}
+
+.robotBox {
+    position: absolute;
+    left: calc(50% - 430px);
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 180px;
+}
+
+.robotBox img {
+    width: 160px;
+    image-rendering: pixelated;
+}
+
+
+.stats {
+    position: absolute;
+
+    left: calc(50% + 250px);
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 150px;
+    text-align: center;
+}
+@media(max-width:900px){
+
+    .gameArea{
+        height:auto;
+        flex-direction:column;
+    }
+
+    .robotBox,
+    .stats{
+        position:static;
+        transform:none;
+        margin:20px;
+    }
+
+}
+
+.timerSide,
+.correctSide {
+
+    background: #f5e6c8;
+    border: 4px solid #123c4a;
+    padding: 15px;
+    margin-bottom: 20px;
+
+    box-shadow: 5px 5px 0 #123c4a;
+}
+
+.stats h2 {
+    font-size: 13px;
+}
+
+.stats h1 {
+    font-size: 24px;
+    color: #f26a2e;
+}
+
+.robotBox {
+    width: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.robotBox img {
+    width: 160px;
+    image-rendering: pixelated;
+}
+
+#popupScreen {
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(18,60,74,0.85);
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+
+    z-index: 20;
+}
+
+
+#popupScreen img {
+
+    width: 500px;
+    max-width: 80%;
+
+    image-rendering: pixelated;
+
+    margin-bottom: 30px;
+}
+
+
+#popupScreen button {
+
+    background:#f26a2e;
+    color:white;
+
+    padding:15px 30px;
+
+    border:4px solid #123c4a;
+
+    font-family:'Press Start 2P', cursive;
+
+    cursor:pointer;
+
+}
+
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- START SCREEN -->
+<div id="startPage">
+
+    <button class="startButton" onclick="startGame()">
+        START GAME
+    </button>
+
+</div>
+
+<!-- POPUP SCREEN -->
+<div id="popupScreen">
+
+    <img id="popupImage" src="">
+
+    <button onclick="closePopup()">
+        CONTINUE
+    </button>
+
+</div>
+
+<!-- <h1>🧠 Calculator Game</h1> -->
+<h2>🎯 Target: <span id="target"></span></h2>
+<h2>⭐ Level: <span id="level">1</span></h2>
+
+<div class="gameArea">
+
+    <div class="robotBox">
+        <img id="robot" src="robot.png">
+    </div>
+
+    <div class="calculator">
+        <div class="display" id="display"></div>
+        <div class="grid" id="grid"></div>
+    </div>
+
+    <div class="stats">
+
+    <div class="timerSide">
+        <h2>⏱ Time</h2>
+        <h1 id="timer">0</h1>
+    </div>
+
+    <div class="correctSide">
+        <h2>✅ Correct</h2>
+        <h1 id="correctCount">0/3</h1>
+    </div>
+
+</div>
+
+</div>
+
+<button onclick="newGame()">New Game</button>
+
+<button onclick="toggleMusic()">🔊 MUSIC</button>
+
+<div class="result" id="result"></div>
+
+<script>
+
+let level = 1;
+let score = 0;
+let timer;
+let timeLeft = 0;
+let numbers = [];
+let target = 0;
+let display = "";
+
+function newGame() {
+    numbers = [];
+    display = "";
+
+    for (let i = 0; i < 4; i++) {
+        numbers.push(Math.floor(Math.random() * 9) + 1);
+    }
+
+    const ops = ["+", "-", "*"];
+
+    let indexA = Math.floor(Math.random() * numbers.length);
+    let indexB = Math.floor(Math.random() * numbers.length);
+
+    while (indexA === indexB) {
+        indexB = Math.floor(Math.random() * numbers.length);
+    }
+
+    let a = numbers[indexA];
+    let b = numbers[indexB];
+
+    let op = ops[Math.floor(Math.random() * ops.length)];
+
+    target = Math.round(eval(`${a}${op}${b}`));
+
+    while (target <= 0) {
+
+        indexA = Math.floor(Math.random() * numbers.length);
+        indexB = Math.floor(Math.random() * numbers.length);
+
+        while (indexA === indexB) {
+            indexB = Math.floor(Math.random() * numbers.length);
+        }
+
+        a = numbers[indexA];
+        b = numbers[indexB];
+
+        op = ops[Math.floor(Math.random() * ops.length)];
+
+        target = Math.round(eval(`${a}${op}${b}`));
+    }
+
+    document.getElementById("target").innerText = target;
+    document.getElementById("display").innerText = "";
+    document.getElementById("result").innerText = "";
+
+    generateCalculator();
+
+    document.getElementById("level").innerText = level;
+    let needed = level === 3 ? 5 : 3;
+
+    document.getElementById("correctCount").innerText =
+    score + "/" + needed;
+
+    if(level == 1){
+
+        document.querySelector(".timerSide").style.display = "none";
+
+    }
+    else if(level == 2){
+
+        document.querySelector(".timerSide").style.display = "block";
+
+        startTimer(30);
+
+    }
+    else if(level == 3){
+
+        document.querySelector(".timerSide").style.display = "block";
+
+        startTimer(20);
+
+    }
+}
+
+function startTimer(seconds){
+
+    clearInterval(timer);
+
+    timeLeft = seconds;
+
+    document.getElementById("timer").innerText = timeLeft;
+
+    timer = setInterval(() => {
+
+        timeLeft--;
+
+        document.getElementById("timer").innerText = timeLeft;
+
+
+        if(timeLeft <= 0){
+
+            clearInterval(timer);
+
+            showPopup("gameover.png", "gameover");
+
+        }
+
+    },1000);
+
+}
+
+function generateCalculator() {
+    let grid = document.getElementById("grid");
+    grid.innerHTML = "";
+
+    // NUMBERS
+    numbers.forEach((num) => {
+        let btn = document.createElement("button");
+        btn.innerText = num;
+
+        btn.onclick = () => {
+            if (!btn.classList.contains("used")) {
+                display += num;
+                btn.classList.add("used");
+                updateDisplay();
+            }
+        };
+
+        grid.appendChild(btn);
+    });
+
+    // OPERATORS
+    ["+", "-", "*", "/"].forEach(op => {
+        let btn = document.createElement("button");
+        btn.innerText = op;
+        btn.classList.add("operator");
+
+        btn.onclick = () => {
+            display += op;
+            updateDisplay();
+        };
+
+        grid.appendChild(btn);
+    });
+
+    // CLEAR
+    let clearBtn = document.createElement("button");
+    clearBtn.innerText = "C";
+    clearBtn.classList.add("clear");
+    clearBtn.onclick = clearDisplay;
+    grid.appendChild(clearBtn);
+
+    // EQUAL
+    let equalBtn = document.createElement("button");
+    equalBtn.innerText = "=";
+    equalBtn.classList.add("equal");
+    equalBtn.onclick = calculate;
+    grid.appendChild(equalBtn);
+
+    // (,)
+    ["(", ")"].forEach(op => {
+    let btn = document.createElement("button");
+    btn.innerText = op;
+    btn.classList.add("operator");
+
+    btn.onclick = () => {
+        display += op;
+        updateDisplay();
+    };
+
+    grid.appendChild(btn);
+});
+}
+
+function updateDisplay() {
+    document.getElementById("display").innerText = display;
+}
+
+function calculate() {
+    try {
+
+        let result = eval(display);
+
+        if (Math.round(result) === Math.round(target)) {
+
+            score++;
+
+            let needed = level === 3 ? 5 : 3;
+
+            document.getElementById("correctCount").innerText =
+            score + "/" + needed;
+
+            playSound(true);
+            robotMood("happy");
+
+            document.getElementById("result").innerText =
+            "✅ Correct!";
+
+
+            if(level === 1 && score >= 3){
+
+                level = 2;
+                score = 0;
+
+                showPopup("level2.png");
+
+            }
+
+            else if(level === 2 && score >= 3){
+
+                level = 3;
+                score = 0;
+
+                showPopup("level3.png");
+
+            }
+
+            else if(level === 3 && score >= 5){
+
+                showPopup("congratulations.png", "win");
+
+            }
+
+
+            if(level < 3){
+
+                setTimeout(() => {
+                    robotMood("normal");
+                    newGame();
+                },1000);
+
+            }
+
+
+        }
+
+        else {
+
+            robotMood("sad");
+
+            document.getElementById("result").innerText =
+            "❌ Wrong! Try again!";
+
+            setTimeout(() => {
+                robotMood("normal");
+            },1000);
+        }
+
+
+    } catch {
+
+        document.getElementById("result").innerText =
+        "⚠️ Error!";
+
+    }
+}
+
+function clearDisplay() {
+    display = "";
+    updateDisplay();
+
+    document.querySelectorAll(".grid button").forEach(btn => {
+        btn.classList.remove("used");
+    });
+}
+
+function playSound(correct) {
+    let audio = new Audio();
+
+    if (correct) {
+        audio.src = "https://www.soundjay.com/buttons/sounds/button-4.mp3";
+    } else {
+        audio.src = "https://www.soundjay.com/buttons/sounds/button-10.mp3";
+    }
+
+    audio.play();
+}
+
+function startGame() {
+
+    document.getElementById("startPage").style.display = "none";
+
+    robotMood("normal");
+
+    let music = document.getElementById("bgMusic");
+    music.volume = 0.3;
+    music.play();
+
+    showPopup("level1.png");
+    newGame();
+}
+
+function toggleMusic(){
+
+    let music = document.getElementById("bgMusic");
+
+    if(music.paused){
+        music.play();
+    } else {
+        music.pause();
+    }
+
+}
+function robotMood(mood){
+
+    let robot = document.getElementById("robot");
+
+    if(mood === "happy"){
+        robot.src = "robot-happy.png";
+    }
+
+    else if(mood === "sad"){
+        robot.src = "robot-sad.png";
+    }
+
+    else {
+        robot.src = "robot-normal.png";
+    }
+}
+
+function showPopup(image, type){
+
+    document.getElementById("popupImage").src = image;
+
+    document.getElementById("popupScreen").style.display = "flex";
+
+    document.getElementById("popupScreen").dataset.type = type || "";
+
+}
+
+
+function closePopup(){
+
+    let popupType = document.getElementById("popupScreen").dataset.type;
+
+    document.getElementById("popupScreen").style.display = "none";
+
+
+    if(popupType === "gameover"){
+
+        level = 1;
+        score = 0;
+
+        clearInterval(timer);
+
+        document.getElementById("level").innerText = "1";
+        document.getElementById("correctCount").innerText = "0/3";
+
+        newGame();
+
+        return;
+    }
+
+
+    if(popupType === "win"){
+
+        level = 1;
+        score = 0;
+
+        clearInterval(timer);
+
+        document.getElementById("startPage").style.display = "flex";
+
+        return;
+    }
+
+
+    newGame();
+
+}
+
+</script>
+
+</body>
+</html>
